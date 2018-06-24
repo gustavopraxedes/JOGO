@@ -1,0 +1,662 @@
+//criar varios inimigos com movimento random, em seguida criar tempo para a fase rodar
+//caso sobreviva nesse tempo aparece um chefe, se não game over
+//se vida do boss chegar a 0 vc ganha
+
+
+var v, v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14
+var s, s1
+
+var x=100, y=300
+var x1=900,y1=150
+var x0=x,y0=y
+var x2=1100,y2=300
+var x3=1100,y3=450
+var x4=1101,y4=260
+var x5=1101,y5=210
+var x6=1100,y6=300
+
+var pont=0
+var vida=100, vida2=1000
+var tempo=0 , tempo2=0 , tempo3=0
+var fase
+
+
+
+function preload(){
+	v= loadImage("sky1.png")
+	v1=loadImage("x3.png")
+	v2=loadImage("ini2.png")
+	v3=loadImage("bala1.png")
+	v4=loadImage("ini3.png")
+	v5=loadImage("core.png")
+	v6=loadImage("over.png")
+	v7=loadImage("ini.png")
+	v8=loadImage("ini5.png")
+	v9=loadImage("ini4.png")
+	v10=loadImage("2.png")
+	v11=loadImage("68.png")
+	v12=loadImage('core.png')
+	v13=loadImage("botao.png")
+	v14=loadImage("botao2.png")
+	
+	
+	s=loadSound("ss.mp3")
+	
+	start=loadImage("start.png")
+	start2=loadImage('8.png')
+	
+	fim=loadImage("congrats.png")
+	fim2=loadImage("final.png")
+	
+	boss=loadImage("perigo.png")
+	dg=loadImage("dg.png")
+	win=loadImage("win.png")
+
+}
+ 
+function setup() {
+	createCanvas(1000,600);
+	fase=1
+	
+	 
+	s.setVolume(0.1)
+	s.play();
+	s.loop()
+}   
+
+     
+function draw() {
+   
+   frameRate(60)
+	
+   
+ 
+  if(tempo<=0){
+  background(start)
+	image(v13,300,400,200,150)
+	image(v14,500,400,200,150)
+	
+	
+ }	
+	if(keyIsDown(67)){
+	 tempo3=tempo3+1
+	}
+	if(keyIsDown(32)){
+	 tempo=tempo+1
+	  
+	}
+	
+	if(tempo>=1){
+	background(start2)
+	
+	
+	textSize(19)
+   fill(250,250,250)
+   stroke(1)
+   text("Dessa vez seu teste será derrotar essa leva de monstros...",10,20)
+   text("Acha que tens o que é preciso??",10,40)
+   text("Se sim, acredito na sua coragem. Seja bem vindo a space monster. ",10,60)
+   text("pressione BACKSPACE para voltar",10,580)
+   text("curiosidades:",10,100)
+   text("mostro que concede vida extra",10,120)
+   image(v7,10,140)
+	
+		if(keyIsDown(8)){
+		tempo=0
+		}
+		
+	} 
+	if(keyIsDown(13)){
+	 tempo2=tempo2+1
+	  
+
+  }
+ 
+  if(tempo2>=1 && tempo2<3000){
+	  
+  	  
+  //começa com o background e com objeto e personagem	
+  background(v);
+  
+  //movimentação do personagem
+  fill(255)
+  if (keyIsDown(LEFT_ARROW))
+    x-=8;
+
+  if (keyIsDown(RIGHT_ARROW))
+    x+=8;
+
+  if (keyIsDown(UP_ARROW))
+    y-=8;
+
+  if (keyIsDown(DOWN_ARROW))
+    y+=8;
+	
+  image(v1,x,y,50,50)
+  
+  if(x<-1){
+	  x=100
+	  y=300
+	  }
+  if(x>1001){
+	  x=100
+	  y=300
+	  }
+  if(y<-1){
+	  x=100
+	  y=300
+	  }
+  if(y>601){
+	  x=100
+	  y=300
+	  } 
+  
+  
+  //inimigo rodando aleatoriamente...lembrar de criar varios
+  image(v2,x1,y1,50,50)
+  x1=x1-2
+  if(x1<0){
+	x1=1001
+	y1=random(20,500)  
+  }
+  
+  //inimigo 2
+   image(v4,x2,y2,50,50)
+  x2=x2-5
+  if(x2<0){
+	x2=1001
+	y2=random(20,500)  
+  }
+  
+  
+  //criar tiro
+ 	
+	
+  if(disparo=true){
+	  x0=x0+10
+  image(v3,x0+15,y0+18,15,15)
+  if(keyIsDown(32)){
+	x0=x
+	y0=y           
+  }
+  if(x0>=1000){
+	  x0=x
+	  y0=y
+	  }
+	  
+  }
+				  
+   //colisão de objetos 
+    var d = int(dist(x, y, x2, y2));
+   r=45
+   
+   //segunda
+   var d2 = int(dist(x, y, x1, y1));
+   r2=45
+  
+   //terceiro
+   var d3 = int(dist(x, y, x3, y3));
+   r3=55
+   //4° monstro porem ainda é o msm
+    var d4 = int(dist(x, y, x4, y4));
+   r4=45
+   
+   //5° mosntro porem ainda é o msm
+   var d5 = int(dist(x, y, x5, y5));
+   r5=45
+   
+   //colisão boss
+     var d6 = int(dist(x, y, x6, y6+20));
+   r6=70
+   
+   
+   //colisão dos tiros 1
+   var dt1 = int(dist(x0, y0, x2, y2));
+   rt=20
+   if((dt1-rt)<=0){
+      x2=x2-1001
+      x0=x0+1001
+   }
+  
+  
+   //colisão tiro 2
+    var dt = int(dist(x0, y0, x1, y1));
+   rt=25
+   if((dt-rt)<=0){
+	  x1=x1-1001
+	  x0=x0+1001
+   }
+   
+   //colisão tiro 3
+   var dt3 = int(dist(x0, y0, x3, y3));
+   rt=30
+   if((dt3-rt)<=0){
+	  x3=x3-1001
+	  vida=vida+50
+	  x0=x0+1001
+   }
+   
+   //colisão tiro 4
+    var dt4 = int(dist(x0, y0, x5, y5));
+   rt=20
+   if((dt4-rt)<=0){
+      x5=x5-1001
+      x0=x0+1001
+   }
+   
+   //colisão tiro 5
+   var dt5 = int(dist(x0, y0, x4, y4));
+   rt=25
+   if((dt5-rt)<=0){
+	  x4=x4-1001
+	  x0=x0+1001
+   }
+   //colisão tiro ao boss
+    var dt6 = int(dist(x0, y0, x6, y6+30));
+   rt=40
+   if((dt6-rt)<=0){
+      x0=x0+1001
+      vida2=vida2-1
+     
+   }
+   
+   //corações na tela
+   image(v5,25,25,20,20)
+   
+   
+   //pontos escritos na tela
+   textSize(17)
+   fill(0)
+   stroke(3)
+   text("Pontos:"+pont,25,100)
+   if((dt-rt)<=0){
+	 pont=pont+100  
+   }
+   if((dt1-rt)<=0){
+	 pont=pont+100
+   }
+   if((dt3-rt)<=0){
+	 pont=pont+100
+   }
+   
+   //perder vidas
+   textSize(17)
+   fill(0)
+   stroke(3)
+   text(vida,50,40)
+   if((d-r)<=0){
+	   vida=vida-1
+   }
+   if((d2-r2)<=0){
+	   vida=vida-1
+   }
+   if((d3-r3)<=0){
+		vida=vida-1
+   }
+    if((d4-r4)<=0){
+		vida=vida-1
+   }
+    if((d5-r5)<=0){
+		vida=vida-1
+   }
+    if((d6-r6)<=0){
+		vida=vida-1
+   }
+   	
+   //game over
+   if(vida<=-1){
+   background(v6)
+   textSize(20)
+		fill(250,250,250)
+		stroke(1)
+		text("Precione F5 para iniciar o jogo novamente",350,500)
+		text("Você conseguiu "+pont+" pontos",350,520)	
+   noLoop()
+   }
+   //tempo fases 
+   tempo=tempo+1
+   tempo2=tempo2+1
+   
+   // FASE 2
+   if(tempo2>1000){
+	   x2=x2-6
+	   x1=x1-4
+   }
+   //FASE 3
+   if(tempo2>2000){
+	 //inimigo novo
+	 image(v7,x3,y3,70,70)
+	 x3=x3-5
+	  if(x3<0) {
+		x3=1001
+		y3=random(20,500)
+	  }	
+	
+	
+	  var d3 = int(dist(x, y, x3, y3));
+	  var r3=50
+	//outro inimigo 
+	  image(v8,x4,y4,50,50)
+      x4=x4-2
+  if(x4<0){
+	x4=1001
+	y4=random(20,500)  
+  } 
+	//outro inimigo
+     image(v9,x5,y5,50,50)
+     x5=x5-5
+  if(x5<0){
+	x5=1001
+	y5=random(20,500)  
+   }
+  
+  }
+  if(tempo2==3000){
+	background(fim)
+	alert("Voce conseguiu derrotar nossos desafios")
+	alert("conseguiu "+pont)
+	;
+	  
+	  fill(251,251,0)
+	  stroke(0)
+	  strokeWeight(2)
+	  rect(400,400,200,100,20)
+	  
+	   
+	   textSize(30)
+   fill(0)
+   stroke(0,191,255)
+   strokeWeight(2)
+   text("Continue",440,460)
+  }
+  
+ } 
+	//SEGUNDA FASE MAPA 
+	
+  //movimentação do personagem
+  if(tempo2>=3000){
+  background(v10)
+	tempo2=tempo2+1
+	
+  //movimentação do personagem
+  fill(255)
+  if (keyIsDown(LEFT_ARROW))
+    x-=8;
+
+  if (keyIsDown(RIGHT_ARROW))
+    x+=8;
+
+  if (keyIsDown(UP_ARROW))
+    y-=8;
+
+  if (keyIsDown(DOWN_ARROW))
+    y+=8;
+	
+  image(v1,x,y,50,50)
+  
+  if(x<-1){
+	  x=100
+	  y=300
+	  }
+  if(x>1001){
+	  x=100
+	  y=300
+	  }
+  if(y<-1){
+	  x=100
+	  y=300
+	  }
+  if(y>601){
+	  x=100
+	  y=300
+	  } 
+  
+  
+  //inimigo rodando aleatoriamente...lembrar de criar varios
+  image(v2,x1,y1,50,50)
+  x1=x1-2
+  if(x1<0){
+	x1=1001
+	y1=random(20,500)  
+  }
+  
+  //inimigo 2
+   image(v4,x2,y2,50,50)
+  x2=x2-5
+  if(x2<0){
+	x2=1001
+	y2=random(20,500)  
+  }
+  //criar tiro
+ 	
+	
+  if(disparo=true){
+	  x0=x0+10
+  image(v3,x0+15,y0+18,15,15)
+  if(keyIsDown(32)){
+	x0=x
+	y0=y           
+  }
+  if(x0>=1000){
+	  x0=x
+	  y0=y
+	  }
+	  
+  }
+				  
+   //colisão de objetos 
+    var d = int(dist(x, y, x2, y2));
+   r=45
+   
+   //segunda
+   var d2 = int(dist(x, y, x1, y1));
+   r2=45
+  
+   //terceiro
+   var d3 = int(dist(x, y, x3, y3));
+   r3=55
+   //4° monstro porem ainda é o msm
+    var d4 = int(dist(x, y, x4, y4));
+   r4=45
+   
+   //5° mosntro porem ainda é o msm
+   var d5 = int(dist(x, y, x5, y5));
+   r5=45
+   
+   
+   
+   //colisão dos tiros 1
+   var dt1 = int(dist(x0, y0, x2, y2));
+   rt=20
+   if((dt1-rt)<=0){
+      x2=x2-1001
+      x0=x0+1001
+   }
+  
+  
+   //colisão tiro 2
+    var dt = int(dist(x0, y0, x1, y1));
+   rt=25
+   if((dt-rt)<=0){
+	  x1=x1-1001
+	  x0=x0+1001
+   }
+   
+   //colisão tiro 3
+   var dt3 = int(dist(x0, y0, x3, y3));
+   rt=30
+   if((dt3-rt)<=0){
+	  x3=x3-1001
+	  vida=vida+50
+	  x0=x0+1001
+   }
+   
+   //colisão tiro 4
+    var dt4 = int(dist(x0, y0, x5, y5));
+   rt=20
+   if((dt4-rt)<=0){
+      x5=x5-1001
+      x0=x0+1001
+   }
+   
+   //colisão tiro 5
+   var dt5 = int(dist(x0, y0, x4, y4));
+   rt=25
+   if((dt5-rt)<=0){
+	  x4=x4-1001
+	  x0=x0+1001
+   }
+    //colisão boss
+     var d6 = int(dist(x, y, x6, y6+20));
+   r6=70
+   
+   //colisão tiro ao boss
+    var dt6 = int(dist(x0, y0, x6, y6+30));
+   rt=40
+   if((dt6-rt)<=0){
+      x0=x0+1001
+      vida2=vida2-10
+     
+   }
+   
+   //corações na tela
+   image(v5,25,25,20,20)
+   
+   
+   //pontos escritos na tela
+   textSize(17)
+   fill(0)
+   stroke(3)
+   text("Pontos:"+pont,25,100)
+   if((dt-rt)<=0){
+	 pont=pont+100  
+   }
+   if((dt1-rt)<=0){
+	 pont=pont+100
+   }
+   if((dt3-rt)<=0){
+	 pont=pont+100
+   }
+   
+   //perder vidas
+   textSize(17)
+   fill(0)
+   stroke(3)
+   text(vida,50,40)
+   if((d-r)<=0){
+	   vida=vida-1
+   }
+   if((d2-r2)<=0){
+	   vida=vida-1
+   }
+   if((d3-r3)<=0){
+		vida=vida-1
+   }
+    if((d4-r4)<=0){
+		vida=vida-1
+   }
+    if((d5-r5)<=0){
+		vida=vida-1
+   }
+     if((d6-r6)<=0){
+		vida=vida-1
+   }
+   
+   	
+   //game over
+   if(vida<=-1){
+   background(v6)
+  textSize(20)
+		fill(250,250,250)
+		stroke(1)
+		text("Precione F5 para iniciar o jogo novamente",350,500)	
+		text("Você conseguiu "+pont+" pontos",350,520)
+   noLoop()
+   
+   }
+   //tempo fases 
+   tempo=tempo+10
+   
+   // FASE 2
+   if(tempo2>4000){
+	   x2=x2-6
+	   x1=x1-4
+   }
+   //FASE 3
+   if(tempo2>5000){
+	 //inimigo novo
+	 image(v7,x3,y3,70,70)
+	 x3=x3-5
+	  if(x3<0) {
+	    x3=1001
+		y3=random(20,500)
+	  }	
+	
+	
+	  var d3 = int(dist(x, y, x3, y3));
+	  var r3=50
+	//outro inimigo 
+	  image(v8,x4,y4,50,50)
+      x4=x4-2
+  if(x4<0){
+	x4=1001
+	y4=random(20,500)  
+  } 
+	//outro inimigo
+     image(v9,x5,y5,50,50)
+     x5=x5-5
+  if(x5<0){
+	x5=1001
+	y5=random(20,500)  
+   }
+  
+  }
+  if(tempo2==6001){
+	image(boss,10 ,300,250,250)
+	image(boss,740,300,250,250)
+	image(dg,270,300,460,250)
+	alert("você deve derrotar o ultimo inimigo...boatos que ele é um tipo de chefão.")  
+  }
+  
+  if(tempo2>6000){
+	
+	
+	 //boss
+   image(v11,x6,y6,100,100)
+  x6=x6-2
+  if(x6<0){
+	x6=1001
+	y6=random(20,500)  
+  }
+	image(v12,870,25,20,20)
+	  
+	textSize(17)
+   fill(250,250,250)
+   stroke(1)
+   text(vida2,900,40)
+	   
+	
+  }
+		if(vida2<=0){
+		background(win)
+	
+		textSize(20)
+		fill(250,250,250)
+		stroke(1)
+		text("Precione C para os créditos",350,400)	
+			
+			
+				
+		}				 
+		
+	}
+	if(tempo3>=1){
+	background(start2)
+	image(fim2,10,10,400,400)
+	textSize(20)
+		fill(250,250,250)
+		stroke(1)
+		text("Precione F5 para iniciar o jogo novamente",350,400)	
+	}
+		
+}
